@@ -276,7 +276,7 @@ class ApiV1MemberControllerTest {
         resultActions
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.code").value("401-1"))
-                .andExpect(jsonPath("$.msg").value("잘못된 인증키 입니다."));
+                .andExpect(jsonPath("$.msg").value("잘못된 인증키입니다."));
     }
 
 }

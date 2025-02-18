@@ -320,7 +320,7 @@ public class ApiV1PostControllerTest {
         resultActions
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.code").value("401-1"))
-                .andExpect(jsonPath("$.msg").value("잘못된 인증키 입니다."));
+                .andExpect(jsonPath("$.msg").value("잘못된 인증키입니다."));
     }
 
     private ResultActions modifyRequest(long postId, String apiKey, String title, String content) throws Exception {
@@ -380,7 +380,7 @@ public class ApiV1PostControllerTest {
         resultActions
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.code").value("401-1"))
-                .andExpect(jsonPath("$.msg").value("잘못된 인증키 입니다.".formatted(postId)));
+                .andExpect(jsonPath("$.msg").value("잘못된 인증키입니다.".formatted(postId)));
     }
 
     @Test
@@ -458,7 +458,7 @@ public class ApiV1PostControllerTest {
         resultActions
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.code").value("401-1"))
-                .andExpect(jsonPath("$.msg").value("잘못된 인증키 입니다.".formatted(postId)));
+                .andExpect(jsonPath("$.msg").value("잘못된 인증키입니다.".formatted(postId)));
     }
 
     @Test
