@@ -288,7 +288,7 @@ public class ApiV1PostControllerTest {
 
     @Test
     @DisplayName("글 작성")
-    @WithUserDetails("user1")
+    @WithUserDetails("user2")
     void write1() throws Exception {
         String apiKey = "user1";
         String title = "새로운 글 제목";
