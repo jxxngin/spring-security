@@ -31,6 +31,11 @@ public class SecurityConfig {
                                         "/api/*/posts/{postId:\\d+}/comments"
                                 )
                                 .permitAll()
+                                .requestMatchers(
+                                        "/api/*/members/login",
+                                        "/api/*/members/join"
+                                )
+                                .permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )

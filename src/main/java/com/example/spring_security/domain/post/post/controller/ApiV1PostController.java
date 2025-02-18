@@ -13,8 +13,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,7 +49,7 @@ public class ApiV1PostController {
             @RequestParam(defaultValue = "title") String keywordType,
             @RequestParam(defaultValue = "") String keyword
     ) {
-        Member actor = rq.getAuthenticatedActor();
+        Member actor = rq.getActor();
         Page<Post> pagePost = postService.getMines(actor, page, pageSize, keywordType, keyword);
 
         return new RsData<>("200-1",
@@ -71,7 +69,7 @@ public class ApiV1PostController {
         );
 
         if(!post.isPublished()) {
-            Member actor = rq.getAuthenticatedActor();
+            Member actor = rq.getActor();
             post.canRead(actor);
         }
 
@@ -110,7 +108,7 @@ public class ApiV1PostController {
     @PutMapping("{id}")
     @Transactional
     public RsData<PostWithContentDto> modify(@PathVariable long id, @RequestBody @Valid ModifyReqBody reqBody) {
-        Member actor = rq.getAuthenticatedActor();
+        Member actor = rq.getActor();
 
         Post post = postService.getItem(id).orElseThrow(
                 () -> new ServiceException(
@@ -132,7 +130,7 @@ public class ApiV1PostController {
     @DeleteMapping("{id}")
     @Transactional
     public RsData<Void> delete(@PathVariable long id) {
-        Member actor = rq.getAuthenticatedActor();
+        Member actor = rq.getActor();
 
         Post post = postService.getItem(id).orElseThrow(
                 () -> new ServiceException(
