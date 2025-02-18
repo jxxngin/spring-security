@@ -91,20 +91,8 @@ public class ApiV1PostController {
 
     @PostMapping
     @Transactional
-    public RsData<PostWithContentDto> write(
-            @RequestBody WriteReqBody reqBody,
-            @AuthenticationPrincipal UserDetails principal
-    ) {
-        if (principal == null) {
-            throw new ServiceException(
-                    "401-1",
-                    "로그인이 필요합니다."
-            );
-        }
-
-        String username = principal.getUsername();
-        Member actor = memberService.findByUsername(username).get();
-
+    public RsData<PostWithContentDto> write(@RequestBody WriteReqBody reqBody) {
+        Member actor = rq.getActor();
         Post post = postService.write(actor, reqBody.title(), reqBody.content(), reqBody.published(), reqBody.listed());
 
         return new RsData<>(
