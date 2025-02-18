@@ -13,11 +13,10 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/posts")
@@ -92,9 +91,10 @@ public class ApiV1PostController {
 
     @PostMapping
     @Transactional
-    public RsData<PostWithContentDto> write(@RequestBody WriteReqBody reqBody) {
-        Principal principal = SecurityContextHolder.getContext().getAuthentication();
-
+    public RsData<PostWithContentDto> write(
+            @RequestBody WriteReqBody reqBody,
+            @AuthenticationPrincipal UserDetails principal
+    ) {
         if (principal == null) {
             throw new ServiceException(
                     "401-1",
@@ -102,7 +102,7 @@ public class ApiV1PostController {
             );
         }
 
-        String username = principal.getName();
+        String username = principal.getUsername();
         Member actor = memberService.findByUsername(username).get();
 
         Post post = postService.write(actor, reqBody.title(), reqBody.content(), reqBody.published(), reqBody.listed());
