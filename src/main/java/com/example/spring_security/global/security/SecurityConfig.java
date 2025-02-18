@@ -1,5 +1,7 @@
 package com.example.spring_security.global.security;
 
+import com.example.spring_security.global.dto.RsData;
+import com.example.spring_security.standard.util.Ut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,6 +49,20 @@ public class SecurityConfig {
                         customAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class
                 )
+                .exceptionHandling(
+                        exceptionHandling -> exceptionHandling
+                                .authenticationEntryPoint(
+                                        (request, response, authException) -> {
+                                            response.setContentType("application/json;charset=UTF-8");
+                                            response.setStatus(401);
+                                            response.getWriter().write(
+                                                    Ut.Json.toString(
+                                                            new RsData("401-1", "잘못된 인증키입니다.")
+                                                    )
+                                            );
+                                        }
+                                )
+                );
         ;
         return http.build();
     }
